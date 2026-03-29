@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { width: 320px; font-family: system-ui, -apple-system, sans-serif; padding: 20px; margin: 0; background-color: #f8fafc; color: #0f172a; }
+    h2 { margin-top: 0; font-size: 18px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; }
+    .score-container { text-align: center; margin: 20px 0; }
+    .score-circle { width: 100px; height: 100px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; margin: 0 auto 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+    .score-value { font-size: 36px; font-weight: 800; line-height: 1; }
+    .score-label { font-size: 12px; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+    .safe { background-color: #22c55e; }
+    .warning { background-color: #eab308; }
+    .danger { background-color: #ef4444; }
+    .status { font-weight: 700; font-size: 18px; }
+    .reasons-box { background: white; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; }
+    .reasons-title { font-size: 13px; font-weight: 600; color: #64748b; margin-bottom: 8px; text-transform: uppercase; }
+    ul { padding-left: 20px; margin: 0; font-size: 13px; color: #334155; }
+    li { margin-bottom: 6px; }
+    #loading { text-align: center; color: #64748b; font-size: 14px; padding: 20px 0; }
+  </style>
+</head>
+<body>
+  <h2>🛡️ NoPhish Safety Scanner</h2>
+  <div id="loading">Analyzing current page...</div>
+  <div id="result" style="display: none;">
+    <div class="score-container">
+      <div id="scoreCircle" class="score-circle">
+        <span id="scoreValue" class="score-value">100</span>
+        <span class="score-label">Safety Score</span>
+      </div>
+      <div id="statusText" class="status">Safe</div>
+    </div>
+    <div class="reasons-box">
+      <div class="reasons-title">Analysis Details</div>
+      <ul id="reasonsList"></ul>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

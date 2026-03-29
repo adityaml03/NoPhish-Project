@@ -1,0 +1,47 @@
+.nophish-score-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  font-size: 14px;
+  vertical-align: middle;
+  cursor: help;
+}
+
+.nophish-safe { }
+.nophish-warning { }
+.nophish-danger { }
+
+#nophish-warning-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 2147483647;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.nophish-warning-modal {
+  background-color: #fff;
+  padding: 32px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-top: 6px solid #ef4444;
+}
+
+.nophish-warning-modal h1 { color: #ef4444; margin-top: 0; font-size: 24px; }
+.nophish-warning-modal p { color: #374151; font-size: 16px; line-height: 1.5; }
+.nophish-details { background-color: #f3f4f6; padding: 16px; border-radius: 8px; text-align: left; margin: 20px 0; font-size: 14px; color: #4b5563; }
+.nophish-details ul { margin: 8px 0 0 0; padding-left: 20px; }
+.nophish-warning-modal button { background-color: #3b82f6; color: white; border: none; padding: 12px 24px; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; margin: 8px; transition: background-color 0.2s; }
+.nophish-warning-modal button:hover { background-color: #2563eb; }
+.nophish-warning-modal .nophish-proceed-btn { background-color: transparent; color: #6b7280; border: 1px solid #d1d5db; }
+.nophish-warning-modal .nophish-proceed-btn:hover { background-color: #f3f4f6; color: #374151; }

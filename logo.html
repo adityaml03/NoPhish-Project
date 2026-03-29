@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NoPhish Logo Generator</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; background: #f0f4f8; }
+    .preview { margin: 20px auto; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: inline-block; }
+    button { background: #3b82f6; color: white; border: none; padding: 10px 20px; margin: 10px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
+    button:hover { background: #2563eb; }
+  </style>
+</head>
+<body>
+  <h1>🛡️ NoPhish Logo Generator</h1>
+  <p>Your custom AI Cybersecurity logo. Click the buttons below to download the exact sizes Chrome needs!</p>
+
+  <div class="preview">
+    <!-- The SVG Logo Design -->
+    <svg id="nophish-logo" width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0f172a" />
+          <stop offset="100%" stop-color="#1e3a8a" />
+        </linearGradient>
+        <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#06b6d4" />
+          <stop offset="100%" stop-color="#3b82f6" />
+        </linearGradient>
+      </defs>
+      <!-- Background Square -->
+      <rect width="128" height="128" rx="28" fill="url(#bg)" />
+      <!-- Shield -->
+      <path d="M64 24 L32 38 V68 C32 92 45 108 64 116 C83 108 96 92 96 68 V38 Z" fill="url(#shieldGrad)" />
+      <!-- Checkmark -->
+      <path d="M52 68 L60 76 L76 56" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+      <!-- AI Node Dot -->
+      <circle cx="64" cy="40" r="6" fill="#ffffff" />
+    </svg>
+  </div>
+
+  <br>
+  <button onclick="downloadIcon(16)">1. Download icon16.png</button>
+  <button onclick="downloadIcon(48)">2. Download icon48.png</button>
+  <button onclick="downloadIcon(128)">3. Download icon128.png</button>
+
+  <script>
+    function downloadIcon(size) {
+      const svg = document.getElementById('nophish-logo');
+      const canvas = document.createElement('canvas');
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      const data = (new XMLSerializer()).serializeToString(svg);
+      const DOMURL = window.URL || window.webkitURL || window;
+      const img = new Image();
+      const svgBlob = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
+      const url = DOMURL.createObjectURL(svgBlob);
+
+      img.onload = function () {
+        ctx.drawImage(img, 0, 0, size, size);
+        DOMURL.revokeObjectURL(url);
+        const imgURI = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+        const a = document.createElement('a');
+        a.setAttribute('download', `icon${size}.png`);
+        a.setAttribute('href', imgURI);
+        a.click();
+      };
+      img.src = url;
+    }
+  </script>
+</body>
+</html>
