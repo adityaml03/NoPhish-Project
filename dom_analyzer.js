@@ -6,11 +6,11 @@ function analyzeDOM() {
   const passwordInputs = document.querySelectorAll('input[type="password"]');
   if (passwordInputs.length > 0) {
     if (window.location.protocol !== 'https:') {
-      penalty += 60;
-      reasons.push('Password field on insecure (HTTP) page');
+      penalty += 60; // Instant RED
+      reasons.push('CRITICAL: Password field on insecure (HTTP) page');
     } else {
-      penalty += 10;
-      reasons.push('Contains password field');
+      penalty += 35; // INCREASED: Unknown sites asking for passwords are highly dangerous!
+      reasons.push('WARNING: Contains password field on an unverified domain');
     }
   }
 
@@ -24,10 +24,10 @@ function analyzeDOM() {
   });
 
   if (hiddenForms > 0) {
-    penalty += 20;
+    penalty += 10; // REDUCED: Modern sites use hidden forms for search bars
     reasons.push(`Found ${hiddenForms} hidden form(s)`);
   }
-
+  
   const scripts = document.querySelectorAll('script[src]');
   let externalScripts = 0;
   scripts.forEach(script => {

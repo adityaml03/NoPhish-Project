@@ -3,13 +3,13 @@ const TRUSTED_DOMAINS = ['tiktok.com', 'paypal.com', 'google.com', 'apple.com', 
 const SUSPICIOUS_KEYWORDS = [
   'verify', 'bank', 'login', 'update', 'secure', 'account', 'auth', 'confirm', 
   'billing', 'support', 'service', 'wallet', 'invoice', 'payment', 'credential', 
-  'password', 'recovery', 'alert', 'notification', 'suspend', 'locked', 'restricted'
+  'password', 'recovery', 'alert', 'notification', 'suspend', 'locked', 'restricted', 'paypal'
 ];
+const CLOUD_PROVIDERS = ['s3.amazonaws.com', 'firebaseapp.com', 'web.app', 'herokuapp.com', 'netlify.app', 'vercel.app'];
 
 function isWhitelisted(url) {
     try {
         let hostname = new URL(url).hostname;
-        // This checks if it's exactly "google.com" OR a subdomain like "support.google.com"
         return TRUSTED_DOMAINS.some(domain => 
             hostname === domain || hostname.endsWith("." + domain)
         );
@@ -24,15 +24,15 @@ function calculateRisk(urlStr) {
     const domain = url.hostname.replace(/^www\./, '');
     
     if (isWhitelisted(urlStr)) {
-  return { penalty: 0, reasons: ['Trusted domain (Heuristic)'] };
-}
+      return { penalty: 0, reasons: ['Trusted domain (Heuristic)'] };
+    }
 
     let penalty = 0;
     let reasons = [];
 
     if (/^(\d{1,3}\.){3}\d{1,3}$/.test(domain)) {
       penalty += 60;
-      reasons.push('IP address used instead of domain name');
+      reasons.push('CRITICAL: IP address used instead of domain name');
     }
 
     if (url.username || url.password) {
@@ -57,15 +57,29 @@ function calculateRisk(urlStr) {
       reasons.push('Multiple hyphens in domain name');
     }
 
-    let keywordMatches = 0;
+    let domainKeywordMatches = 0;
+    let pathKeywordMatches = 0;
     const lowerDomain = domain.toLowerCase();
+    const lowerPath = url.pathname.toLowerCase();
+    
     SUSPICIOUS_KEYWORDS.forEach(keyword => {
-      if (lowerDomain.includes(keyword)) keywordMatches++;
+      if (lowerDomain.includes(keyword)) domainKeywordMatches++;
+      if (lowerPath.includes(keyword)) pathKeywordMatches++;
     });
 
-    if (keywordMatches > 0) {
-      penalty += keywordMatches * 30;
-      reasons.push(`Found ${keywordMatches} highly suspicious keyword(s) in domain`);
+    // Only penalize keywords in the DOMAIN normally (e.g. paypal-login.com)
+    if (domainKeywordMatches > 0) {
+      penalty += domainKeywordMatches * 15;
+      reasons.push(`Found ${domainKeywordMatches} highly suspicious keyword(s) in domain`);
+    }
+
+    // Cloud Storage Abuse Check
+    const isCloudHosted = CLOUD_PROVIDERS.some(provider => lowerDomain.includes(provider));
+    
+    // If it's a cloud host AND it has keywords ANYWHERE (domain or path), it's a scam.
+    if (isCloudHosted && (domainKeywordMatches > 0 || pathKeywordMatches > 0)) {
+      penalty += 40; // MASSIVE PENALTY for cloud storage + brand name
+      reasons.push('CRITICAL: Cloud storage abuse detected (Free host + Suspicious keywords)');
     }
 
     return { penalty, reasons };
@@ -74,8 +88,4 @@ function calculateRisk(urlStr) {
   }
 }
 
-
-window.NoPhishHeuristic = {
-    calculateRisk,
-    isWhitelisted 
-};
+window.NoPhishHeuristic = { calculateRisk, isWhitelisted };

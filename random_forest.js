@@ -57,12 +57,16 @@ async function analyzeWithCloudAI(urlStr) {
     if (isNaN(phishingScore)) phishingScore = 0;
     if (phishingScore > 1) phishingScore = phishingScore / 100; 
 
-    if (phishingScore > 0.8) {
-      penalty += 60;
-      reasons.push(`Random Forest AI: High phishing probability (${(phishingScore * 100).toFixed(1)}%)`);
+    // Fixed AI Scoring Tiers
+    if (phishingScore > 0.9) {
+      penalty += 55; // If AI is 90%+ sure, trigger RED
+      reasons.push(`CRITICAL AI: Extreme phishing probability (${(phishingScore * 100).toFixed(1)}%)`);
+    } else if (phishingScore > 0.7) {
+      penalty += 30; // Yellow warning
+      reasons.push(`AI Warning: High phishing probability (${(phishingScore * 100).toFixed(1)}%)`);
     } else if (phishingScore > 0.5) {
-      penalty += 30;
-      reasons.push(`Random Forest AI: Suspicious URL semantics (${(phishingScore * 100).toFixed(1)}%)`);
+      penalty += 15; // Minor warning
+      reasons.push(`AI Notice: Suspicious URL semantics (${(phishingScore * 100).toFixed(1)}%)`);
     } else {
       reasons.push(`Random Forest AI: URL semantics appear safe (${((1 - phishingScore) * 100).toFixed(1)}% confidence)`);
     }
@@ -76,5 +80,4 @@ async function analyzeWithCloudAI(urlStr) {
   return { penalty, reasons };
 }
 
-// We keep this variable name the same so we don't have to rewrite content.js!
 window.NoPhishCloudAI = { analyzeWithCloudAI };
