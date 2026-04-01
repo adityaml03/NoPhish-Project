@@ -67,18 +67,14 @@ function calculateRisk(urlStr) {
       if (lowerPath.includes(keyword)) pathKeywordMatches++;
     });
 
-    // Only penalize keywords in the DOMAIN normally (e.g. paypal-login.com)
     if (domainKeywordMatches > 0) {
       penalty += domainKeywordMatches * 15;
       reasons.push(`Found ${domainKeywordMatches} highly suspicious keyword(s) in domain`);
     }
 
-    // Cloud Storage Abuse Check
     const isCloudHosted = CLOUD_PROVIDERS.some(provider => lowerDomain.includes(provider));
-    
-    // If it's a cloud host AND it has keywords ANYWHERE (domain or path), it's a scam.
     if (isCloudHosted && (domainKeywordMatches > 0 || pathKeywordMatches > 0)) {
-      penalty += 40; // MASSIVE PENALTY for cloud storage + brand name
+      penalty += 40; 
       reasons.push('CRITICAL: Cloud storage abuse detected (Free host + Suspicious keywords)');
     }
 

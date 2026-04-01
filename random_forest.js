@@ -57,15 +57,15 @@ async function analyzeWithCloudAI(urlStr) {
     if (isNaN(phishingScore)) phishingScore = 0;
     if (phishingScore > 1) phishingScore = phishingScore / 100; 
 
-    // Fixed AI Scoring Tiers
+    // YOUR EXACT OLD AI MATH
     if (phishingScore > 0.9) {
-      penalty += 55; // If AI is 90%+ sure, trigger RED
+      penalty += 55; 
       reasons.push(`CRITICAL AI: Extreme phishing probability (${(phishingScore * 100).toFixed(1)}%)`);
     } else if (phishingScore > 0.7) {
-      penalty += 30; // Yellow warning
+      penalty += 30; 
       reasons.push(`AI Warning: High phishing probability (${(phishingScore * 100).toFixed(1)}%)`);
     } else if (phishingScore > 0.5) {
-      penalty += 15; // Minor warning
+      penalty += 15; 
       reasons.push(`AI Notice: Suspicious URL semantics (${(phishingScore * 100).toFixed(1)}%)`);
     } else {
       reasons.push(`Random Forest AI: URL semantics appear safe (${((1 - phishingScore) * 100).toFixed(1)}% confidence)`);
@@ -73,7 +73,6 @@ async function analyzeWithCloudAI(urlStr) {
 
   } catch (e) {
     console.error("Random Forest AI Analysis Error:", e);
-    // If it fails, it means Render is waking up!
     reasons.push(`Random Forest AI: Server is waking up (Takes ~50s). Please refresh the page!`);
   }
 
