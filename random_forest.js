@@ -73,7 +73,12 @@ async function analyzeWithCloudAI(urlStr) {
 
   } catch (e) {
     console.error("Random Forest AI Analysis Error:", e);
-    reasons.push(`Random Forest AI: Server is waking up (Takes ~50s). Please refresh the page!`);
+    
+    // 🔥 THE FIX: "Fail Secure" Architecture
+    // If the AI is asleep or unreachable, we MUST treat the site as suspicious.
+    penalty += 25; 
+    
+    reasons.push(`AI unavailable (Server waking up / Network issue) — Risk treated as suspicious`);
   }
 
   return { penalty, reasons };
