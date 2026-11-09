@@ -3,7 +3,7 @@
 [![Chrome Extension](https://img.shields.io/badge/Chrome%20Extension-Manifest%20V3-blue.svg)](https://developer.chrome.com/docs/extensions/mv3/)
 [![AI Model](https://img.shields.io/badge/AI%20Engine-Random%20Forest%20Classifier-green.svg)](#3-cloud-random-forest-ai-engine)
 [![Cloud Backend](https://img.shields.io/badge/Cloud%20API-Render%20(Node.js)-informational.svg)](https://nophish-backend.onrender.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 
 > **NoPhish** is a lightweight, client-side Chromium browser extension (Manifest V3) that protects users against zero-day phishing attacks, credential-harvesting pages, and cloud storage abuse. It combines **local lexical heuristics**, a **cloud-hosted Random Forest AI engine**, and a **live DOM analysis module** to compute an instant **0–99 Website Safety Score**, injecting visual risk badges into Google search results and intercepting high-risk pages with a fullscreen warning overlay before credentials can be stolen.
 
